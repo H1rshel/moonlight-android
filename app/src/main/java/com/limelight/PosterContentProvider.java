@@ -17,7 +17,9 @@ import java.util.List;
 public class PosterContentProvider extends ContentProvider {
 
 
-    public static final String AUTHORITY = "poster." + BuildConfig.APPLICATION_ID;
+    // LAUNCHDECK-EMBED: libraries have no APPLICATION_ID; the TV poster provider
+    // is unused in Launch Deck Remote (manifest authority stays ${applicationId}).
+    public static final String AUTHORITY = "poster." + BuildConfig.LIBRARY_PACKAGE_NAME;
     public static final String PNG_MIME_TYPE = "image/png";
     public static final int APP_ID_PATH_INDEX = 2;
     public static final int COMPUTER_UUID_PATH_INDEX = 1;
