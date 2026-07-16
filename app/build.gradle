@@ -1,7 +1,8 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+// LAUNCHDECK-EMBED: converted to a library module consumed by Launch Deck Remote (GPL-3)
 
 android {
-    ndkVersion "27.0.12077973"
+    ndkVersion "27.1.12297006"
 
     compileSdk 34
 
@@ -9,13 +10,11 @@ android {
 
     defaultConfig {
         minSdk 21
-        targetSdk 34
 
-        versionName "12.1"
-        versionCode = 314
 
         // Generate native debug symbols to allow Google Play to symbolicate our native crashes
         ndk.debugSymbolLevel = 'FULL'
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     flavorDimensions.add("root")
@@ -36,7 +35,6 @@ android {
                 }
             }
 
-            applicationId "com.limelight.root"
             dimension "root"
             buildConfigField "boolean", "ROOT_BUILD", "true"
         }
@@ -48,7 +46,6 @@ android {
                 }
             }
 
-            applicationId "com.limelight"
             dimension "root"
             buildConfigField "boolean", "ROOT_BUILD", "false"
         }
@@ -65,28 +62,12 @@ android {
         lintConfig file('lint.xml')
     }
 
-    bundle {
-        language {
-            // Avoid splitting by language, since we allow users
-            // to manually switch language in settings.
-            enableSplit = false
-        }
-        density {
-            // FIXME: This should not be necessary but we get
-            // weird crashes due to missing drawable resources
-            // when this split is enabled.
-            enableSplit = false
-        }
-    }
-
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
             resValue "string", "app_label", "Moonlight (Debug)"
             resValue "string", "app_label_root", "Moonlight (Root Debug)"
 
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
         }
         release {
             // To whomever is releasing/using an APK in release mode with
@@ -119,12 +100,10 @@ android {
             // is to please change the applicationId before you publish.
             //
             // TL;DR: Leave the following line alone!
-            applicationIdSuffix ".unofficial"
             resValue "string", "app_label", "Moonlight"
             resValue "string", "app_label_root", "Moonlight (Root)"
 
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
         }
     }
 
